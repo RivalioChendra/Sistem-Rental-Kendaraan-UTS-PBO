@@ -162,7 +162,18 @@ public class RentalKendaraan {
         System.out.print("Jumlah hari sewa: ");
         int jumlahHari = Integer.parseInt(input.nextLine());
 
-        double totalBiaya = k.sewa(nama, jumlahHari);
+        double totalBiaya;
+        // Opsi pakai supir hanya berlaku untuk Mobil, memanfaatkan method
+        // overload hitungTotalBiaya(int, boolean) yang ada di class Mobil.
+        if (k instanceof Mobil) {
+            System.out.print("Pakai supir? (y/n): ");
+            boolean pakaiSupir = input.nextLine().trim().equalsIgnoreCase("y");
+            Mobil mobil = (Mobil) k;
+            totalBiaya = mobil.hitungTotalBiaya(jumlahHari, pakaiSupir);
+            k.sewa(nama);
+        } else {
+            totalBiaya = k.sewa(nama, jumlahHari);
+        }
 
         System.out.println(">> Kendaraan berhasil disewa oleh " + nama + ".");
         System.out.printf(">> Total biaya untuk %d hari: Rp%.0f\n", jumlahHari, totalBiaya);
