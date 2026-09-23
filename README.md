@@ -1,4 +1,4 @@
-# Sistem Rental Kendaraan — Tugas PBO
+# Sistem Rental Kendaraan — UTS PBO
 
 ## 📌 Identitas
 - **Nama** : Rivalio Chendra
@@ -10,14 +10,14 @@
 
 ## 📖 Deskripsi Proyek 
 
-Program ini adalah **Sistem Rental Kendaraan** berbasis Command Line Interface (CLI) yang dibuat menggunakan bahasa pemrograman Java. Program mensimulasikan proses bisnis rental kendaraan sederhana yang biasa dijumpai di lapangan, mulai dari pendataan armada, proses penyewaan, hingga pengembalian kendaraan.
+Program ini adalah **Sistem Rental Kendaraan** berbasis Command Line Interface (CLI) yang dibuat menggunakan bahasa pemrograman Java. Program mensimulasikan proses bisnis rental kendaraan sederhana yang biasa dijumpai di lapangan, mulai dari pendataan kendaraan, proses penyewaan, hingga pengembalian kendaraan.
 
 Melalui program ini, admin (pengguna) dapat:
 - Mengelola data kendaraan: menambah, melihat, mengubah harga sewa, dan menghapus data
-- Menyewakan kendaraan kepada penyewa, lengkap dengan perhitungan **total biaya sewa** otomatis berdasarkan jumlah hari
+- Menyewakan kendaraan kepada penyewa, lengkap dengan perhitungan total biaya sewa otomatis berdasarkan jumlah hari
 - Mengembalikan kendaraan yang telah selesai disewa
 
-Program dirancang dengan dua jenis kendaraan yang berbeda, yaitu **Mobil** dan **Motor**, yang masing-masing memiliki atribut dan aturan perhitungan biaya sewa yang khas. Kendaraan-kendaraan ini dikelola melalui satu daftar (`List<Kendaraan>`) yang sama, memanfaatkan konsep **Inheritance** dan **Polymorphism** sehingga kode program tetap ringkas, mudah dibaca, dan mudah dikembangkan.
+Program dirancang dengan dua jenis kendaraan yang berbeda, yaitu **Mobil** dan **Motor**, yang masing-masing memiliki atribut dan aturan perhitungan biaya sewa yang berbeda. Kendaraan-kendaraan ini dikelola melalui satu daftar (`List<Kendaraan>`) yang sama, memanfaatkan konsep **Inheritance** dan **Polymorphism** sehingga kode program tetap ringkas, mudah dibaca, dan mudah dikembangkan.
 
 ### Konsep OOP yang diterapkan
 | Konsep | Penerapan dalam Program |
@@ -79,56 +79,58 @@ Kedua subclass mewarisi seluruh atribut umum (`namaKendaraan`, `platNomor`, `har
 
 ---
 
-## 🔑 Superclass dan Subclass
+## 🔑 Penjelasan Class Secara Detail
 
 ### 1. `Kendaraan` (Superclass)
 
 Class dasar yang menyimpan data dan perilaku umum yang dimiliki **semua** jenis kendaraan.
 
 **Atribut:**
-- `namaKendaraan` — nama/merk kendaraan
-- `platNomor` — nomor plat sebagai identitas unik kendaraan
-- `hargaSewaPerHari` — tarif sewa per hari
-- `status` — status kendaraan (`"Tersedia"` / `"Disewa"`)
-- `namaPenyewa` — nama penyewa saat ini (`"-"` jika belum disewa)
+- `namaKendaraan`: nama/merk kendaraan
+- `platNomor`: nomor plat sebagai identitas unik kendaraan
+- `hargaSewaPerHari`: tarif sewa per hari
+- `status`: status kendaraan (`"Tersedia"` / `"Disewa"`)
+- `namaPenyewa`: nama penyewa saat ini (`"-"` jika belum disewa)
 
 **Method penting:**
-- `setHargaSewaPerHari(double)` — mengubah harga sewa, dengan validasi `if` agar harga tidak boleh negatif
-- `setHargaSewaPerHari()` — versi **overload** tanpa parameter, digunakan untuk mereset harga sewa ke 0
-- `sewa(String namaPenyewa)` — mengubah status kendaraan menjadi "Disewa" dan mencatat nama penyewa
-- `sewa(String namaPenyewa, int jumlahHari)` — versi **overload** dari `sewa()`, langsung menghitung dan mengembalikan total biaya sewa berdasarkan jumlah hari
-- `kembalikan()` — mengembalikan status kendaraan menjadi "Tersedia" dan mereset data penyewa
-- `hitungTotalBiaya(int jumlahHari)` — menghitung total biaya sewa dasar (`hargaSewaPerHari × jumlahHari`); method inilah yang nantinya **di-override** oleh `Mobil` dan `Motor` agar masing-masing punya aturan hitung sendiri
-- `tampilkanInfo()` — mencetak data umum kendaraan (plat, nama, harga, status, penyewa); method inilah yang juga **di-override** oleh subclass untuk menambahkan info spesifik
+- `setHargaSewaPerHari(double)`: mengubah harga sewa, dengan validasi `if` agar harga tidak boleh negatif
+- `setHargaSewaPerHari()`: versi **overload** tanpa parameter, digunakan untuk mereset harga sewa ke 0
+- `sewa(String namaPenyewa)`: mengubah status kendaraan menjadi "Disewa" dan mencatat nama penyewa
+- `sewa(String namaPenyewa, int jumlahHari)`: versi **overload** dari `sewa()`, langsung menghitung dan mengembalikan total biaya sewa berdasarkan jumlah hari
+- `kembalikan()`: mengembalikan status kendaraan menjadi "Tersedia" dan mereset data penyewa
+- `hitungTotalBiaya(int jumlahHari)`: menghitung total biaya sewa dasar (`hargaSewaPerHari × jumlahHari`); method inilah yang nantinya **di-override** oleh `Mobil` dan `Motor` agar masing-masing punya aturan hitung sendiri
+- `tampilkanInfo()`: mencetak data umum kendaraan (plat, nama, harga, status, penyewa); method inilah yang juga **di-override** oleh subclass untuk menambahkan info spesifik
 
 ### 2. `Mobil` (Subclass)
 
 Mewakili kendaraan roda empat dengan tambahan atribut dan aturan khusus.
 
 **Atribut tambahan:**
-- `jumlahKursi` — jumlah kursi/kapasitas penumpang mobil
-- `BIAYA_SUPIR_PER_HARI` — biaya tambahan tetap (Rp100.000/hari) jika penyewa memilih opsi pakai supir
+- `jumlahKursi`: jumlah kursi/kapasitas penumpang mobil
+- `BIAYA_SUPIR_PER_HARI`: biaya tambahan tetap (Rp100.000/hari) jika penyewa memilih opsi pakai supir
 
 **Method:**
-- `tampilkanInfo()` *(override)* — memanggil `super.tampilkanInfo()` lalu menambahkan baris info **jumlah kursi**
-- `hitungTotalBiaya(int jumlahHari)` *(override)* — untuk Mobil, perhitungan mengikuti aturan dasar dari superclass (harga × hari), tanpa diskon
-- `hitungTotalBiaya(int jumlahHari, boolean pakaiSupir)` *(overload)* — versi tambahan yang memperhitungkan biaya supir jika `pakaiSupir` bernilai `true`
+- `tampilkanInfo()` *(override)*: memanggil `super.tampilkanInfo()` lalu menambahkan baris info **jumlah kursi**
+- `hitungTotalBiaya(int jumlahHari)` *(override)*: untuk Mobil, perhitungan mengikuti aturan dasar dari superclass (harga × hari), tanpa diskon
+- `hitungTotalBiaya(int jumlahHari, boolean pakaiSupir)` *(overload)*: versi tambahan yang memperhitungkan biaya supir jika `pakaiSupir` bernilai `true`
+
+> Saat menu **Sewa Kendaraan** dijalankan untuk kendaraan bertipe Mobil, program otomatis menanyakan "Pakai supir? (y/n)" lalu memakai versi overload `hitungTotalBiaya(jumlahHari, pakaiSupir)` ini untuk menghitung total biayanya. Untuk Motor, pertanyaan ini tidak muncul karena opsi supir memang khusus Mobil.
 
 ### 3. `Motor` (Subclass)
 
 Mewakili kendaraan roda dua dengan tambahan atribut dan aturan diskon khusus.
 
 **Atribut tambahan:**
-- `kapasitasCC` — kapasitas mesin motor dalam satuan cc
-- `DISKON_MINGGUAN` — faktor diskon (0.9, setara potongan 10%) yang berlaku otomatis untuk penyewaan ≥ 7 hari
+- `kapasitasCC`: kapasitas mesin motor dalam satuan cc
+- `DISKON_MINGGUAN`: faktor diskon (0.9, setara potongan 10%) yang berlaku otomatis untuk penyewaan ≥ 7 hari
 
 **Method:**
-- `tampilkanInfo()` *(override)* — memanggil `super.tampilkanInfo()` lalu menambahkan baris info **kapasitas cc**
-- `hitungTotalBiaya(int jumlahHari)` *(override)* — menghitung biaya dasar seperti superclass, lalu jika `jumlahHari >= 7`, total otomatis dikalikan `DISKON_MINGGUAN` (dapat diskon 10%)
+- `tampilkanInfo()` *(override)*: memanggil `super.tampilkanInfo()` lalu menambahkan baris info **kapasitas cc**
+- `hitungTotalBiaya(int jumlahHari)` *(override)*: menghitung biaya dasar seperti superclass, lalu jika `jumlahHari >= 7`, total otomatis dikalikan `DISKON_MINGGUAN` (dapat diskon 10%)
 
 ### 4. `RentalKendaraan` (Main Program)
 
-Class utama berisi `main()` dan seluruh logika interaksi dengan pengguna (menu, input, pemrosesan CRUD). Class ini menyimpan seluruh kendaraan dalam satu `List<Kendaraan>`, sehingga Mobil dan Motor dapat diperlakukan secara seragam lewat referensi tipe `Kendaraan` — inilah yang memungkinkan **polymorphism** benar-benar dimanfaatkan, misalnya saat menampilkan seluruh data kendaraan cukup dengan memanggil `k.tampilkanInfo()` di dalam satu `for` loop tanpa perlu mengecek tipe objek satu per satu.
+Class utama berisi `main()` dan seluruh logika interaksi dengan pengguna (menu, input, pemrosesan CRUD). Class ini menyimpan seluruh kendaraan dalam satu `List<Kendaraan>`, sehingga Mobil dan Motor dapat diperlakukan secara seragam lewat referensi tipe `Kendaraan`, inilah yang memungkinkan **polymorphism** benar-benar dimanfaatkan, misalnya saat menampilkan seluruh data kendaraan cukup dengan memanggil `k.tampilkanInfo()` di dalam satu `for` loop tanpa perlu mengecek tipe objek satu per satu.
 
 ---
 
@@ -140,13 +142,13 @@ Class utama berisi `main()` dan seluruh logika interaksi dengan pengguna (menu, 
 | 2 | Lihat Semua Kendaraan | Menampilkan seluruh data kendaraan beserta atribut khusus tiap jenisnya (memanfaatkan polymorphism `tampilkanInfo()`) |
 | 3 | Update Harga Sewa | Mengubah harga sewa per hari sebuah kendaraan berdasarkan plat nomor |
 | 4 | Hapus Kendaraan | Menghapus data kendaraan dari daftar berdasarkan plat nomor |
-| 5 | Sewa Kendaraan | Menyewakan kendaraan ke penyewa beserta jumlah hari sewa, lalu menghitung total biaya otomatis sesuai aturan tiap jenis kendaraan |
+| 5 | Sewa Kendaraan | Menyewakan kendaraan ke penyewa beserta jumlah hari sewa, lalu menghitung total biaya otomatis sesuai aturan tiap jenis kendaraan. Khusus Mobil, ada opsi tambahan pakai supir yang menambah biaya |
 | 6 | Kembalikan Kendaraan | Mengembalikan status kendaraan menjadi tersedia kembali |
 | 7 | Keluar | Mengakhiri program |
 
 ---
 
-## ▶️ Alur Program (Petunjuk Eksekusi dan Cara Kerja Sistem)
+## ▶️ Alur Program
 
 1. **Compile** seluruh file Java (pastikan struktur folder `model/` dan `com/mycompany/rentalkendaraan/` tetap sesuai package-nya):
    ```bash
@@ -163,7 +165,7 @@ Class utama berisi `main()` dan seluruh logika interaksi dengan pengguna (menu, 
 
 ---
 
-## 🖼️ Penjelasan Gambar (Screenshot Output)
+## 🖼️ Penjelasan Output
 
 Berikut adalah dokumentasi hasil pengujian program beserta penjelasan dari setiap tahapan yang dijalankan.
 
@@ -177,7 +179,7 @@ Gambar di atas menunjukkan tampilan awal program saat pertama kali dijalankan. P
 
 ### 2. Menambah Data Kendaraan
 
-![Tambah Kendaraan](asset/tambah-kendaraan.png)
+![Tambah Kendaraan](asset/menutambah.png)
 
 Gambar ini menampilkan proses penambahan data kendaraan baru melalui menu nomor 1. Pengguna diminta memasukkan jenis kendaraan (Mobil atau Motor), lalu mengisi data seperti nama kendaraan, plat nomor, harga sewa per hari, dan atribut spesifik sesuai jenisnya (jumlah kursi untuk Mobil, kapasitas CC untuk Motor). Setelah data berhasil diinput, program menampilkan pesan konfirmasi bahwa kendaraan baru telah berhasil ditambahkan ke dalam daftar.
 
@@ -185,15 +187,15 @@ Gambar ini menampilkan proses penambahan data kendaraan baru melalui menu nomor 
 
 ### 3. Menampilkan Seluruh Data Kendaraan
 
-![Lihat Semua Kendaraan](asset/lihat-kendaraan.png)
+![Lihat Semua Kendaraan](asset/menulihat.png)
 
-Gambar ini memperlihatkan hasil dari menu nomor 2, yaitu daftar seluruh kendaraan yang tersimpan dalam sistem. Setiap baris menampilkan informasi lengkap kendaraan, meliputi plat nomor, nama kendaraan, harga sewa per hari, status ketersediaan (Tersedia/Disewa), serta nama penyewa jika kendaraan sedang disewa. Bagian ini membuktikan **polymorphism** berjalan dengan benar: program hanya memanggil satu method yang sama, `k.tampilkanInfo()`, di dalam satu loop, namun keluaran untuk Mobil otomatis menampilkan jumlah kursi dan keluaran untuk Motor otomatis menampilkan kapasitas cc — sesuai versi `tampilkanInfo()` milik masing-masing subclass yang meng-override superclass `Kendaraan`. Dapat dilihat bahwa Honda PCX yang sebelumnya saya buat terlihat pada bagian ini.
+Gambar ini memperlihatkan hasil dari menu nomor 2, yaitu daftar seluruh kendaraan yang tersimpan dalam sistem. Setiap baris menampilkan informasi lengkap kendaraan, meliputi plat nomor, nama kendaraan, harga sewa per hari, status ketersediaan (Tersedia/Disewa), serta nama penyewa jika kendaraan sedang disewa. Bagian ini membuktikan polymorphism berjalan dengan benar, program hanya memanggil satu method yang sama, `k.tampilkanInfo()`, di dalam satu loop, namun keluaran untuk Mobil otomatis menampilkan jumlah kursi dan keluaran untuk Motor otomatis menampilkan kapasitas cc, sesuai versi `tampilkanInfo()` milik masing-masing subclass yang meng-override superclass `Kendaraan`. Dapat dilihat bahwa Honda PCX yang sebelumnya saya buat terlihat pada bagian ini.
 
 ---
 
 ### 4. Mengubah Harga Sewa Kendaraan
 
-![Update Harga Sewa](asset/update-harga.png)
+![Update Harga Sewa](asset/menuupdate.png)
 
 Gambar ini menunjukkan proses pembaruan data melalui menu nomor 3. Pengguna memasukkan plat nomor kendaraan yang ingin diubah harganya, kemudian memasukkan nilai harga sewa yang baru. Program akan memvalidasi input tersebut (harga tidak boleh bernilai negatif) sebelum memperbarui data dan menampilkan pesan bahwa harga sewa telah berhasil diperbarui.
 
@@ -201,7 +203,7 @@ Gambar ini menunjukkan proses pembaruan data melalui menu nomor 3. Pengguna mema
 
 ### 5. Menghapus Data Kendaraan
 
-![Hapus Kendaraan](asset/update-harga.png)
+![Hapus Kendaraan](asset/menuhapus.png)
 
 Gambar ini menampilkan proses penghapusan data melalui menu nomor 4. Pengguna memasukkan plat nomor kendaraan yang ingin dihapus, kemudian program mencari data tersebut dalam daftar dan menghapusnya jika ditemukan. Apabila plat nomor yang dimasukkan tidak terdaftar, program akan menampilkan pesan bahwa data tidak ditemukan.
 
@@ -209,15 +211,15 @@ Gambar ini menampilkan proses penghapusan data melalui menu nomor 4. Pengguna me
 
 ### 6. Menyewa Kendaraan
 
-![Sewa Kendaraan](asset/sewa-kendaraan.png)
+![Sewa Kendaraan](asset/menusewa.png)
 
-Gambar ini memperlihatkan proses penyewaan kendaraan melalui menu nomor 5. Pengguna memasukkan plat nomor kendaraan, nama penyewa, dan jumlah hari sewa. Program terlebih dahulu memeriksa status kendaraan tersebut; apabila masih berstatus "Tersedia", maka status akan diubah menjadi "Disewa", nama penyewa akan tercatat, dan total biaya sewa akan dihitung otomatis melalui method `hitungTotalBiaya()` sesuai aturan masing-masing jenis kendaraan — Motor mendapatkan diskon 10% jika disewa 7 hari atau lebih, sedangkan Mobil dihitung sesuai tarif dasar (harga per hari dikali jumlah hari).
+Gambar ini memperlihatkan proses penyewaan kendaraan melalui menu nomor 5. Pengguna memasukkan plat nomor kendaraan, nama penyewa, dan jumlah hari sewa. Program terlebih dahulu memeriksa status kendaraan tersebut, apabila masih berstatus "Tersedia", maka status akan diubah menjadi "Disewa" dan nama penyewa akan tercatat. Jika kendaraan yang disewa adalah Mobil, program akan menanyakan tambahan opsi "Pakai supir? (y/n)". Total biaya sewa kemudian dihitung otomatis melalui method `hitungTotalBiaya()` sesuai aturan masing-masing jenis kendaraan, Motor mendapatkan diskon 10% jika disewa 7 hari atau lebih, sedangkan Mobil dihitung sesuai tarif dasar (harga per hari dikali jumlah hari), ditambah biaya supir jika opsi tersebut dipilih.
 
 ---
 
 ### 7. Mengembalikan Kendaraan
 
-![Kembalikan Kendaraan](asset/kembalikan-kendaraan.png)
+![Kembalikan Kendaraan](asset/menukembalikan.png)
 
 Gambar ini menunjukkan proses pengembalian kendaraan melalui menu nomor 6. Setelah pengguna memasukkan plat nomor kendaraan yang dikembalikan, program akan memeriksa apakah kendaraan tersebut sedang berstatus "Disewa". Jika benar, status kendaraan akan dikembalikan menjadi "Tersedia" dan data nama penyewa akan dihapus (direset), menandakan kendaraan tersebut sudah dapat disewa kembali oleh penyewa lain.
 
@@ -225,6 +227,6 @@ Gambar ini menunjukkan proses pengembalian kendaraan melalui menu nomor 6. Setel
 
 ### 8. Keluar dari Program
 
-![Keluar](screenshot/keluar.png)
+![Keluar](asset/keluar.png)
 
 Gambar ini memperlihatkan output yang keluar jika user memilih opsi ke 7.
