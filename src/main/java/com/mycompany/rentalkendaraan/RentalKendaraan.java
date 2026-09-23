@@ -92,6 +92,8 @@ public class RentalKendaraan {
     }
 
     // ---------- READ ----------
+    // POLYMORPHISM: cukup panggil k.tampilkanInfo() tanpa perlu cek tipe/instanceof.
+    // Java otomatis menjalankan versi Mobil atau Motor sesuai objek aslinya.
     private static void tampilkanSemuaKendaraan() {
         if (daftarKendaraan.isEmpty()) {
             System.out.println(">> Belum ada data kendaraan.");
@@ -100,11 +102,7 @@ public class RentalKendaraan {
         int no = 1;
         for (Kendaraan k : daftarKendaraan) {
             System.out.print("#" + no + " ");
-            if (k instanceof Mobil) {
-                ((Mobil) k).tampilkanInfoMobil();
-            } else if (k instanceof Motor) {
-                ((Motor) k).tampilkanInfoMotor();
-            }
+            k.tampilkanInfo();
             no++;
         }
     }
@@ -145,6 +143,9 @@ public class RentalKendaraan {
     }
 
     // ---------- SEWA ----------
+    // Menggunakan method sewa(nama, jumlahHari) yang OVERLOADING dari sewa(nama).
+    // Perhitungan totalnya OVERRIDING: beda rumus antara Mobil dan Motor,
+    // tapi dipanggil lewat cara yang sama (polymorphism).
     private static void sewaKendaraan(Scanner input) {
         System.out.print("Plat nomor kendaraan: ");
         Kendaraan k = cariKendaraan(input.nextLine());
@@ -158,8 +159,13 @@ public class RentalKendaraan {
         }
         System.out.print("Nama penyewa: ");
         String nama = input.nextLine();
-        k.sewa(nama);
+        System.out.print("Jumlah hari sewa: ");
+        int jumlahHari = Integer.parseInt(input.nextLine());
+
+        double totalBiaya = k.sewa(nama, jumlahHari);
+
         System.out.println(">> Kendaraan berhasil disewa oleh " + nama + ".");
+        System.out.printf(">> Total biaya untuk %d hari: Rp%.0f\n", jumlahHari, totalBiaya);
     }
 
     // ---------- KEMBALIKAN ----------
